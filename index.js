@@ -5,7 +5,7 @@ import express from "express"
 import mongoose from "mongoose"
 import cors from "cors"
 import user_router from "./routes/user_route.js"
-// import admin_router from "./routes/admin_route.js"
+import admin_router from "./routes/admin_route.js"
 
 const port = process.env.PORT
 const app = express()
@@ -27,7 +27,7 @@ main()
 
 
 app.use('/api',user_router)
-// app.use('/api/admin',admin_router)
+app.use('/api/admin',admin_router)
 
 app.listen(port,(error) => {
     if(error){
