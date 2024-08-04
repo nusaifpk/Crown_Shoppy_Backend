@@ -28,17 +28,3 @@ export const sendOTP = async (email) => {
   return otp;
 };
 
-
-// export const sendPasswordResetEmail = async (email, token) => {
-//   const resetUrl = `http://yourfrontend.com/resetpassword?token=${token}&email=${email}`; // Update with your frontend reset URL
-
-//   const mailOptions = {
-//     from: process.env.EMAIL_USER,
-//     to: email,
-//     subject: "Password Reset Request",
-//     text: `Click this link to reset you password: ${resetUrl}`,
-//     html: `<b>Click this link to reset you password: <a href="${resetUrl}">${resetUrl}</a></b>`,
-//   };
-
-//   await transporter.sendMail(mailOptions);
-// };

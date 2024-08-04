@@ -3,6 +3,7 @@ import users from './../model/user_schema.js';
 import bcrypt from "bcrypt";
 import { sendOTP } from "./Mailer.js";
 import jwt from "jsonwebtoken"
+import products from "../model/product_schema.js";
 
 const otpStore = new Map();
 
@@ -12,6 +13,7 @@ import fs from "fs";
 import path from 'path';
 import cloudinary from 'cloudinary';
 import multer from 'multer';
+import categoryModel from "../model/category_schema.js";
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -148,7 +150,8 @@ export const verifyOTP = async (req, res) => {
   
       const token = jwt.sign(
         { userId: user._id, identifier: identifier },
-        process.env.USER_ACCESS_TOKEN_SECRET
+        process.env.USER_ACCESS_TOKEN_SECRET,
+        {expiresIn:"1h"}
       );
   
       return res.status(200).json({
@@ -172,8 +175,44 @@ export const verifyOTP = async (req, res) => {
     }
   };
   
-  
+  export const viewProduct = async (req, res) => {
+    const allProducts = await products.find()
+    const allProducts_count = await products.countDocuments()
 
+    if (!allProducts) {
+        return res.status(404).json({
+            status: "error",
+            message: "products not found...!"
+        })
+    }
+    else {
+        return res.status(200).json({
+            status: "success",
+            message: "fetched product data",
+            data: allProducts,
+            dataCount: allProducts_count
+        })
+    }
+}
+
+
+export const viewProductById = async (req, res) => {
+  const productId = req.params.id
+  const product = await products.findById(productId)
+
+  if (!product) {
+    return res.status(404).json({
+      status: "error",
+      message: "product not found...!"
+    })
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "fetched product by id",
+    data: product
+  })
+}
   
   
 //--------------------------------------------------PROFILE SECTION --------------------------------------------------//
@@ -266,3 +305,20 @@ export const verifyOTP = async (req, res) => {
         });
     }
 };
+
+export const viewCategory = async (req,res) => {
+  const categories = await categoryModel.find()
+
+  if(categories === ''){
+      return res.status(200).json({
+          status:"success",
+          message:"categories is empty"
+      })
+  }
+
+  return res.status(200).json({
+      status:"success",
+      message:"fetched categories successfully",
+      data:categories
+  })
+}
