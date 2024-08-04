@@ -13,7 +13,7 @@ const app = express()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors({
-    origin: "https://crown-shoppy-frontend.vercel.app/"
+    origin: "https://crown-shoppy-frontend.vercel.app"
 }))
 
 async function main(){
